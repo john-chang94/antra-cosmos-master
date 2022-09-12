@@ -10,7 +10,7 @@ const TRY_FILENAMES = ['template', 'template/welcome-cadet.md'].map(basename =>
 function logWelcomeLetter ({ cosmonautId, shuttle }) {
   bluebird
     .filter(TRY_FILENAMES, filename =>
-      fs.lstat(filename).then(stat => stat.isFile && !stat.isDirectory)
+      fs.lstat(filename).then(stat => stat.isFile() && !stat.isDirectory())
     )
     .then(filenames => {
       // take the first file, assume it's the desired template

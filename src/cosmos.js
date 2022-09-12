@@ -32,13 +32,17 @@ const onSpaceTravelRequested = async ({ shuttleDb, cosmonautId }) => {
   const shuttlesArr = [];
   const shuttles = await shuttleDb.read();
   // console.log('SHUTTLES', shuttles)
-  Object.keys(shuttles).map((item) => {
-    shuttlesArr.push(JSON.parse(shuttles[item]));
+  Object.values(shuttles).map((item) => {
+    if (typeof item === "string") {
+      shuttlesArr.push(JSON.parse(item));
+    } else {
+      shuttlesArr.push(item);
+    }
   });
-  const availableShuttle = shuttlesArr.find(({ date, remainingCapacity }) => {
-    console.log(date, remainingCapacity);
-    date >= 0 && remainingCapacity > 0;
-  });
+  console.log(shuttlesArr);
+  const availableShuttle = shuttlesArr.find(
+    ({ date, remainingCapacity }) => date >= 0 && remainingCapacity > 0
+  );
   console.log("AVAILABLE SHUTTLE", availableShuttle);
   if (!availableShuttle) {
     throw new Error(
